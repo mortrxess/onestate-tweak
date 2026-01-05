@@ -6,17 +6,17 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Theos
-        uses: (theos/setup-theos-action@v1) # Utilise un environnement macOS certifié
+        uses: theos/setup-theos-action@v1 # Correction du nom du dépôt
 
       - name: Build Tweak
         run: |
           make
           
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # Passage à la v4 pour éviter l'erreur de dépréciation
         with:
           name: OneState-Dylib
           path: .theos/obj/debug/*.dylib
