@@ -1,0 +1,8 @@
+Package: com.chillgaming.onestate
+Name: OneStateUltra
+Version: 1.0
+Architecture: iphoneos-arm
+Depends: mobilesubstrate
+Description: Menu iOS 18 pour OneState
+Author: knfdz
+Section: Tweaks
