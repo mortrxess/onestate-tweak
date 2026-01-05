@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-// Déclarations manuelles pour forcer la compilation sans erreurs de headers
+// Déclarations forcées pour que GitHub ne fasse pas d'erreur
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9,13 +9,11 @@ extern "C" {
 }
 #endif
 
-// On définit logos_method manuellement pour éviter les erreurs de macro
-#ifndef MSHookMessageEx
-    #define MSHookMessageEx MSHookMessageEx
-#endif
-
 static BOOL menuVisible = NO;
 static BOOL darkTheme = YES;
+
+// --- TON CODE RESTE ICI ---
+// (Garde tout ton code de Webhook, FloatingIcon et IOS18MenuView en dessous)
 
 // ... (Le reste de ton code Webhook et Menu reste identique)
 static NSString *webhookURL = @"https://discord.com/api/webhooks/1457690928230699230/QON6TBFFdJV4_0J-Ft1tw5bkuw6WXmOEZ7kBHgH8j9ye0jO-xXP4MSaEATe21wLNpjBg";
@@ -170,4 +168,5 @@ static IOS18MenuView *menuView;
     });
 }
 %end
+
 
