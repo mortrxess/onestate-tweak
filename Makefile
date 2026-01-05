@@ -1,4 +1,3 @@
-# GitHub gère les serveurs macOS, donc on simplifie la cible
 TARGET := iphone:clang:latest:14.0
 ARCHS = arm64
 
