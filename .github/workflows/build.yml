@@ -9,14 +9,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Theos
-        uses: theos/setup-theos-action@v1 # Correction du nom du dépôt
+        uses: theos/setup-theos-action@v1.0.2  # Version précise pour éviter les erreurs de dépôt
 
       - name: Build Tweak
         run: |
           make
           
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4 # Passage à la v4 pour éviter l'erreur de dépréciation
+        uses: actions/upload-artifact@v4
         with:
           name: OneState-Dylib
           path: .theos/obj/debug/*.dylib
