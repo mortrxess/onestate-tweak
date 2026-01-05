@@ -1,5 +1,15 @@
 #import <UIKit/UIKit.h>
 
+// --- DÉCLARATIONS POUR LE COMPILATEUR ---
+// Ces lignes permettent à GitHub de comprendre les fonctions Theos sans erreur
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void MSHookMessageEx(Class _class, SEL selector, IMP replacement, IMP *result);
+#ifdef __cplusplus
+}
+#endif
+
 static BOOL menuVisible = NO;
 static BOOL darkTheme = YES;
 
@@ -81,8 +91,20 @@ void sendWebhookNotification() {
     if (self) {
         self.layer.cornerRadius = 25;
         self.backgroundColor = [UIColor clearColor];    
-        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://media.discordapp.net/attachments/1457690877769027725/1457695110601904129/image.png?ex=695cefdd&is=695b9e5d&hm=11415b61da5cf95aa58631bb668716ce9713cd49e518e66fd213136c6cae8b5d&=&format=webp&quality=lossless&width=461&height=461"]]];
-        [self setImage:img forState:UIControlStateNormal];
+        
+        // Chargement asynchrone pour éviter de bloquer le démarrage
+        NSURL *imageURL = [NSURL URLWithString:@"https://media.discordapp.net/attachments/1457690877769027725/1457695110601904129/image.png?ex=695cefdd&is=695b9e5d&hm=11415b61da5cf95aa58631bb668716ce9713cd49e518e66fd213136c6cae8b5d&=&format=webp&quality=lossless&width=461&height=461"];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *data = [NSData dataWithContentsOfURL:imageURL];
+            if (data) {
+                UIImage *img = [UIImage imageWithData:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setImage:img forState:UIControlStateNormal];
+                });
+            }
+        });
+
         [self addTarget:self action:@selector(toggleMenu) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
@@ -107,8 +129,8 @@ static IOS18MenuView *menuView;
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         
-        // Méthode compatible iOS 13+ pour éviter l'erreur keyWindow
         UIWindow *w = nil;
+        // Correction pour récupérer la window sur iOS 13+
         for (UIWindowScene *scene in [UIApplication sharedApplication].connectedScenes) {
             if (scene.activationState == UISceneActivationStateForegroundActive) {
                 for (UIWindow *window in scene.windows) {
